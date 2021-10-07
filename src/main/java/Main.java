@@ -1,3 +1,4 @@
+import builder.OrderInfoDto;
 import factory.*;
 
 public class Main {
@@ -7,5 +8,11 @@ public class Main {
         Pizza fourCheese = new ItalianPizzaFactoryImpl().createPizza("fourCheese");
         PizzaStore russiaPizzaStore = new RussiaPizzaStoreImpl();
         russiaPizzaStore.orderPizza("пирог");
+
+        //Builder
+        OrderInfoDto orderInfoDto = OrderInfoDto
+                .builder("info Vasiliy")
+                .withOrderDescr("descr")
+                .build();
     }
 }
