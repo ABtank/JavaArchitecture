@@ -5,7 +5,7 @@ import singleton.Singleton;
 public class Main {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         Pizza fourCheese = new ItalianPizzaFactoryImpl().createPizza("fourCheese");
         PizzaStore russiaPizzaStore = new RussiaPizzaStoreImpl();
         russiaPizzaStore.orderPizza("пирог");
@@ -18,5 +18,11 @@ public class Main {
 
 //        Singleton
         Singleton s = Singleton.getInstance();
+
+//        Prototype
+        OrderInfoDto clone = (OrderInfoDto) orderInfoDto.clone();
+        orderInfoDto.setClientInfo("info client");
+        System.out.println(clone);
+        System.out.println(orderInfoDto);
     }
 }
