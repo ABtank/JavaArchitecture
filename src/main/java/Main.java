@@ -1,5 +1,6 @@
 import builder.OrderInfoDto;
 import factory.*;
+import singleton.Singleton;
 
 public class Main {
 
@@ -14,5 +15,8 @@ public class Main {
                 .builder("info Vasiliy")
                 .withOrderDescr("descr")
                 .build();
+
+//        Singleton
+        Singleton s = Singleton.getInstance();
     }
 }
