@@ -1,4 +1,6 @@
 import adapter.*;
+import adapter.Monkey;
+import bridge.after.*;
 import builder.OrderInfoDto;
 import factory.ItalianPizzaFactoryImpl;
 import factory.Pizza;
@@ -46,5 +48,19 @@ public class Main {
         humanList.add(monkeyToHumanAnotherAdapter); //  #2
         humanList.forEach(Human::speak);
         humanList.forEach(Human::work);
+
+//        Bridge
+        System.out.println("-=Bridge=-");
+        MoveImplementor twolegs = new TwoLegsMoveImpl();
+        MoveImplementor fourlegs = new FourLegsMoveImpl();
+        MoveImplementor birdMove = new BirdMoveImpl();
+
+        AbstractAnimal monkey2 = new bridge.after.Monkey(fourlegs);
+        AbstractAnimal tiger = new Tiger(fourlegs);
+        AbstractAnimal parrot = new Parrot(birdMove);
+        AbstractAnimal seagle = new Seagle(birdMove);
+
+        List<AbstractAnimal> animals = List.of(monkey2, tiger, parrot, seagle);
+        animals.forEach(AbstractAnimal::live);
     }
 }
