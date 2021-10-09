@@ -1,7 +1,14 @@
-import adapter.*;
 import adapter.Monkey;
+import adapter.*;
 import bridge.after.*;
 import builder.OrderInfoDto;
+import composite.Developer;
+import composite.EmployeeComponent;
+import composite.Manager;
+import composite.fitness.Round;
+import composite.fitness.Workout;
+import composite.fitness.WorkoutComponent;
+import composite.fitness.WorkoutExercise;
 import factory.ItalianPizzaFactoryImpl;
 import factory.Pizza;
 import factory.PizzaStore;
@@ -9,6 +16,7 @@ import factory.RussiaPizzaStoreImpl;
 import singleton.Singleton;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
@@ -62,5 +70,99 @@ public class Main {
 
         List<AbstractAnimal> animals = List.of(monkey2, tiger, parrot, seagle);
         animals.forEach(AbstractAnimal::live);
+
+//        Composite
+        List<EmployeeComponent> composite = new LinkedList<>();
+        EmployeeComponent ceo = new Manager(
+                "Владимир Владимирович Путин",
+                "Глава"
+        );
+        EmployeeComponent subManager = new Manager(
+                "Мишустин Михаил Владимирович",
+                "ФСБ"
+        );
+        EmployeeComponent subManager2 = new Manager(
+                "Герман Греф",
+                "Финансы"
+        );
+        ceo.addChild(subManager);
+        ceo.addChild(subManager2);
+        EmployeeComponent developer1 = new Developer(
+                "Нестеренко Дмитрий Олегович",
+                "Senior Java Developer"
+        );
+        EmployeeComponent developer2 = new Developer(
+                "Ивано Иван Иванович",
+                "Тестеровщик"
+        );
+        subManager.addChild(developer1);
+        subManager.addChild(developer2);
+
+        EmployeeComponent financialDeveloper = new Developer(
+                "Иванов Сергей",
+                "Senior Java Developer"
+        );
+        EmployeeComponent financialTester = new Developer(
+                "Иванов Алексей",
+                "Тестеровщик"
+        );
+        subManager2.addChild(financialDeveloper);
+        subManager2.addChild(financialTester);
+//        ceo.print();
+
+        ceo.sleep();
+
+//        V.2 for fitnessAB
+        WorkoutComponent workout = new Workout("first workout");
+        List<WorkoutComponent> listEx = new ArrayList<>();
+        listEx.add(new WorkoutExercise("Подтягивания"));
+        listEx.add(new WorkoutExercise("Отжимания"));
+        listEx.add(new WorkoutExercise("Приседания"));
+        listEx.forEach(exercise -> workout.addChild(exercise));
+
+        List<WorkoutComponent> listRounds = new ArrayList<>();
+        listRounds.add(new Round("70", 7));
+        listRounds.add(new Round("70", 7));
+        listRounds.add(new Round("70", 7));
+        listRounds.add(new Round("70", 7));
+        listRounds.add(new Round("70", 7));
+        listRounds.add(new Round("55", 12));
+        listRounds.add(new Round("55", 12));
+        listRounds.add(new Round("55", 12));
+        listRounds.add(new Round("55", 12));
+        listRounds.add(new Round("55", 12));
+        listRounds.add(new Round("78", 15));
+        listRounds.add(new Round("78", 15));
+        listRounds.add(new Round("78", 15));
+        listRounds.add(new Round("78", 15));
+        listRounds.add(new Round("78", 15));
+
+        for (int i = 0; i < listEx.size(); i++) {
+            for (int j = i * 5; j < (5 + i * 5); j++) {
+                listEx.get(i).addChild(listRounds.get(j));
+            }
+        }
+
+        System.out.println("-=Workout=-");
+        System.out.println(workout.toString());
+        System.out.println("Тоннаж за тренировку = " + workout.getSumWeigth());
+        System.out.println("Всего упражнений = " + workout.geSumChild());
+        int allRounds = 0;
+        int allRips = 0;
+        for (int i = 0; i < workout.getChild().size(); i++) {
+            allRounds += workout.getChild().get(i).geSumChild();
+            allRips += workout.getChild().get(i).getSumRep();
+        }
+        System.out.println("Всего подходов = " + allRounds);
+        System.out.println("Всего повторов = " + allRips);
+        System.out.println("Упражнения ");
+        for (int i = 0; i < workout.getChild().size(); i++) {
+            System.out.println(" #" + workout.getChild().get(i).getOrdinal() + " " + workout.getChild().get(i).getName());
+            System.out.println("Тоннаж: " + workout.getChild().get(i).getSumWeigth());
+            System.out.println("Всего подходов: " + workout.getChild().size());
+            System.out.println("Всего повторов: " + workout.getChild().get(i).getSumRep());
+            System.out.println("1ПМ = " + workout.getChild().get(i).getOneRepMax());
+        }
+
     }
 }
