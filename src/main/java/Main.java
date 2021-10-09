@@ -9,6 +9,7 @@ import composite.fitness.Round;
 import composite.fitness.Workout;
 import composite.fitness.WorkoutComponent;
 import composite.fitness.WorkoutExercise;
+import decorator.*;
 import factory.ItalianPizzaFactoryImpl;
 import factory.Pizza;
 import factory.PizzaStore;
@@ -27,22 +28,22 @@ public class Main {
         PizzaStore russiaPizzaStore = new RussiaPizzaStoreImpl();
         russiaPizzaStore.orderPizza("пирог");
 
-        //Builder
+//        -=BUILDER=-
         OrderInfoDto orderInfoDto = OrderInfoDto
                 .builder("info Vasiliy")
                 .withOrderDescr("descr")
                 .build();
 
-//        Singleton
+//        -=SINGLETON=-
         Singleton s = Singleton.getInstance();
 
-//        Prototype
+//        -=PROTOTYPE=-
         OrderInfoDto clone = (OrderInfoDto) orderInfoDto.clone();
         orderInfoDto.setClientInfo("info client");
         System.out.println(clone);
         System.out.println(orderInfoDto);
 
-//        Adapter
+//        -=ADAPTER=-
         List<Human> humanList = new ArrayList<>();
 //        #1
         MonkeyToHumanAdapter monkeyToHumanAdapter = new MonkeyToHumanAdapter("Обезяна");
@@ -57,7 +58,7 @@ public class Main {
         humanList.forEach(Human::speak);
         humanList.forEach(Human::work);
 
-//        Bridge
+//        -=BRIDGE=-
         System.out.println("-=Bridge=-");
         MoveImplementor twolegs = new TwoLegsMoveImpl();
         MoveImplementor fourlegs = new FourLegsMoveImpl();
@@ -71,7 +72,7 @@ public class Main {
         List<AbstractAnimal> animals = List.of(monkey2, tiger, parrot, seagle);
         animals.forEach(AbstractAnimal::live);
 
-//        Composite
+//        -=COMPOSITE=-
         List<EmployeeComponent> composite = new LinkedList<>();
         EmployeeComponent ceo = new Manager(
                 "Владимир Владимирович Путин",
@@ -163,6 +164,14 @@ public class Main {
             System.out.println("Всего повторов: " + workout.getChild().get(i).getSumRep());
             System.out.println("1ПМ = " + workout.getChild().get(i).getOneRepMax());
         }
+
+
+//        -=DECORATOR=-
+        Beverage beverage = new Sugar(new Milk(new Coffee()));
+        System.out.println("coffee price = " + beverage.getPrice());
+
+        Beverage tea = new Milk(new Tea());
+        System.out.println("tea price = " + tea.getPrice());
 
     }
 }
