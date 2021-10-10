@@ -14,11 +14,12 @@ import factory.ItalianPizzaFactoryImpl;
 import factory.Pizza;
 import factory.PizzaStore;
 import factory.RussiaPizzaStoreImpl;
+import proxy.CurrencyRateService;
+import proxy.Money;
+import proxy.ProxyCurrencyRateService;
 import singleton.Singleton;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
@@ -172,6 +173,14 @@ public class Main {
 
         Beverage tea = new Milk(new Tea());
         System.out.println("tea price = " + tea.getPrice());
+
+
+        // создаем сервис
+        CurrencyRateService currencyRateService = new ProxyCurrencyRateService();
+
+        // получаем курс из кэша или от цб – это уже решает прокси
+        Money rate = currencyRateService.getCurrencyRate(Currency.getInstance(Locale.US));
+        System.out.println(Currency.getInstance(Locale.US));
 
     }
 }
