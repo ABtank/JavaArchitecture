@@ -1,5 +1,6 @@
 import adapter.Monkey;
 import adapter.*;
+import behavioral.chain_of_responsibility.*;
 import bridge.after.*;
 import builder.OrderInfoDto;
 import composite.Developer;
@@ -182,5 +183,17 @@ public class Main {
         Money rate = currencyRateService.getCurrencyRate(Currency.getInstance(Locale.US));
         System.out.println(Currency.getInstance(Locale.US));
 
+
+        /**Поведенческие паттерны*/
+//       -=Цепочка ответственности=-
+        Context context = new Context();
+        Request request = new Request("123", "Hello world!");
+        AbstractHandler handler = new StarterHandler();
+
+        handler.addLast(new AuthHandler("123"))
+                .addLast(new UpperCaseHandler())
+                .addLast(new DatabaseSaverHandler());
+
+        handler.handle(context, request);
     }
 }
