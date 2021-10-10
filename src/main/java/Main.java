@@ -5,6 +5,9 @@ import behavioral.command.after.Command;
 import behavioral.command.after.DoorCommand;
 import behavioral.command.after.LightCommand;
 import behavioral.command.after.SmartHouseController;
+import behavioral.mediator.Button;
+import behavioral.mediator.MediatorImpl;
+import behavioral.mediator.TextFiled;
 import bridge.after.*;
 import builder.OrderInfoDto;
 import composite.Developer;
@@ -200,12 +203,28 @@ public class Main {
 
         handler.handle(context, request);
 
-//        Commander / Команда
+//        -=Commander / Команда=-
         SmartHouseController controller = new SmartHouseController();
         Command lightCommand = new LightCommand();
         Command doorCommand = new DoorCommand();
         controller.setCommand(List.of(lightCommand, doorCommand));
         controller.perform();
         controller.undo();
+
+//        -=Mediator  / Посредник=-
+        MediatorImpl mediator = new MediatorImpl();
+        Button buttonOk = new Button(mediator, "ok");
+        TextFiled login = new TextFiled(mediator, "");
+        TextFiled password = new TextFiled(mediator, "");
+        mediator.setButtonOk(buttonOk);
+        mediator.setLogin(login);
+        mediator.setPassword(password);
+
+        mediator.showDialogWindow();
+        buttonOk.clickButton();
+        login.fillText("login");
+        password.fillText("password");
+        buttonOk.clickButton();
+
     }
 }
