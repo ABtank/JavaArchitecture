@@ -1,6 +1,10 @@
 import adapter.Monkey;
 import adapter.*;
 import behavioral.chain_of_responsibility.*;
+import behavioral.command.after.Command;
+import behavioral.command.after.DoorCommand;
+import behavioral.command.after.LightCommand;
+import behavioral.command.after.SmartHouseController;
 import bridge.after.*;
 import builder.OrderInfoDto;
 import composite.Developer;
@@ -195,5 +199,13 @@ public class Main {
                 .addLast(new DatabaseSaverHandler());
 
         handler.handle(context, request);
+
+//        Commander / Команда
+        SmartHouseController controller = new SmartHouseController();
+        Command lightCommand = new LightCommand();
+        Command doorCommand = new DoorCommand();
+        controller.setCommand(List.of(lightCommand, doorCommand));
+        controller.perform();
+        controller.undo();
     }
 }
